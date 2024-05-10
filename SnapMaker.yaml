@@ -1,0 +1,48 @@
+- trigger:
+    - platform: webhook
+      webhook_id: wh-snapmaker
+      allowed_methods:
+        - POST
+        - PUT
+  sensor:
+    - name: "SnapMaker 2.0"
+      icon: mdi:printer-3d
+      unique_id: "sensor.glados_state"
+      state: "{{ (trigger.json | from_json)['status'] }}"
+      attributes:
+        ip: "{{ (trigger.json | from_json)['ip'] }}"
+        x: "{{ (trigger.json | from_json)['x'] }}"
+        y: "{{ (trigger.json | from_json)['y'] }}"
+        z: "{{ (trigger.json | from_json)['z'] }}"
+        homed: "{{ (trigger.json | from_json)['homed'] }}"
+        offsetX: "{{ (trigger.json | from_json)['offsetX'] }}"
+        offsetY: "{{ (trigger.json | from_json)['offsetY'] }}"
+        offsetZ: "{{ (trigger.json | from_json)['offsetZ'] }}"
+        toolHead: "{{ (trigger.json | from_json)['toolHead'] }}"
+        nozzleTemperature: "{{ (trigger.json | from_json)['nozzleTemperature'] }}"
+        nozzleTargetTemperature: "{{ (trigger.json | from_json)['nozzleTargetTemperature'] }}"
+        nozzleTemperature2: "{{ (trigger.json | from_json)['nozzleTemperature2'] }}"
+        nozzleTargetTemperature2: "{{ (trigger.json | from_json)['nozzleTargetTemperature2'] }}"
+        heatedBedTemperature: "{{ (trigger.json | from_json)['heatedBedTemperature'] }}"
+        heatedBedTargetTemperature: "{{ (trigger.json | from_json)['heatedBedTargetTemperature'] }}"
+        isFilamentOut: "{{ (trigger.json | from_json)['isFilamentOut'] }}"
+        spindleSpeed: "{{ (trigger.json | from_json)['spindleSpeed'] }}"
+        laserFocalLength: "{{ (trigger.json | from_json)['laserFocalLength'] }}"
+        laserPower: "{{ (trigger.json | from_json)['laserPower'] }}"
+        laserCamera: "{{ (trigger.json | from_json)['laserCamera'] }}"
+        laser10WErrorState: "{{ (trigger.json | from_json)['laser10WErrorState'] }}"
+        workSpeed: "{{ (trigger.json | from_json)['workSpeed'] }}"
+        printStatus: "{{ (trigger.json | from_json)['printStatus'] }}"
+        fileName: "{{ (trigger.json | from_json)['fileName'] }}"
+        totalLines: "{{ (trigger.json | from_json)['totalLines'] }}"
+        currentLine: "{{ (trigger.json | from_json)['currentLine'] }}"
+        progress: "{{ (trigger.json | from_json)['progress'] }}"
+        estimatedTime: "{{ (trigger.json | from_json)['estimatedTime'] }}"
+        elapsedTime: "{{ (trigger.json | from_json)['elapsedTime'] }}"
+        remainingTime: "{{ (trigger.json | from_json)['remainingTime'] }}"
+        enclosure: "{{ (trigger.json | from_json)['moduleList']['enclosure'] }}"
+        rotaryModule: "{{ (trigger.json | from_json)['moduleList']['rotaryModule'] }}"
+        emergencyStopButton: "{{ (trigger.json | from_json)['moduleList']['emergencyStopButton'] }}"
+        airPurifier: "{{ (trigger.json | from_json)['moduleList']['airPurifier'] }}"
+        isEnclosureDoorOpen: "{{ (trigger.json | from_json)['isEnclosureDoorOpen'] }}"
+        doorSwitchCount: "{{ (trigger.json | from_json)['doorSwitchCount'] }}"
