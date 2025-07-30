@@ -5,7 +5,4 @@ The original [version](https://github.com/NiteCrwlr/playground/blob/main/SNStatu
 
 Turns out udp discovery did not work for me and still doesn't but it is now refactored and send all available data.
 
-## Improvements
-
-* Appdaemon app?
-* Rest sensor?
+While creating a docker addon the script has moved to /snapmaker/src

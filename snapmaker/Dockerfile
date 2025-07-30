@@ -8,7 +8,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Copy Python requirements file
 COPY requirements.txt /tmp/
 
-COPY ../smStatus.py /app/smStatus.py
+COPY src/smStatus.py /app/smStatus.py
 
 # Setup base
 # hadolint ignore=DL3003,DL3042
