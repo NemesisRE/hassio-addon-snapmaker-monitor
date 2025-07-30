@@ -12,12 +12,27 @@ import json
 import time
 from datetime import timedelta
 
+retryCounter = 0
+
 haToken = "" # Set your HomeAssistant API Token
 whUrl = '' # Set to your HomeAssistant WebHook URL
 connectIP = '' # Set printer ip or let it discover
 connectPort = '8080'
-retryCounter = 0
 tokenFile = os.getcwd() + "/SMtoken.txt" # Set to writable location (default is script location)
+
+# Read config from ENV VARS
+if os.environ.get("HA_TOKEN"):
+  haToken = os.environ.get("HA_TOKEN")
+if os.environ.get("HA_WEBHOOK_URL"):
+  whUrl = os.environ.get("HA_WEBHOOK_URL")
+if os.environ.get("SM_IP"):
+  connectIP = os.environ.get("SM_IP")
+if os.environ.get("SM_PORT"):
+  connectPort = os.environ.get("SM_PORT")
+if os.environ.get("SM_TOKEN"):
+  smToken = os.environ.get("SM_TOKEN")
+if os.environ.get(""):
+  smToken = os.environ.get("SM_TOKEN")
 
 # Main Program
 def main():
@@ -35,7 +50,8 @@ def main():
     postIt('{"status": "UNAVAILABLE"}')
     sys.exit(1)
 
-  smToken = getSMToken(connectIP)
+  if smToken == "":
+    smToken = getSMToken(connectIP)
   print("Connecting with Token:",smToken)
   smStatus = readStatus(smToken)
   postIt(smStatus)
@@ -66,7 +82,7 @@ def getSMToken(connectIP):
       r = requests.post(smUrl, data=formData, headers=headers)
       if json.loads(r.text).get("token") == smToken:
         file.write(smToken)
-        print("Token received and saved.\nRestart Script for autoconnect now.")
+        print("Token received and saved.\n" + smToken + "\nIf you use docker set SM_TOKEN env var and restart the container.")
         connected = True
         return(smToken)
 
