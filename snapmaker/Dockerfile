@@ -1,6 +1,4 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/base:18.0.3
-# hadolint ignore=DL3006
-FROM ${BUILD_FROM}
+FROM ghcr.io/hassio-addons/base:18.0.3
 
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -8,18 +6,11 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Copy Python requirements file
 COPY requirements.txt /tmp/
 
+# Copy source files
 COPY src/smStatus.py /app/smStatus.py
 
-# Setup base
-# hadolint ignore=DL3003,DL3042
-RUN \
-  apk add --no-cache --virtual .build-dependencies \
-  build-base=0.5-r3 \
-  py3-pip=25.1.1-r0 \
-  python3=3.12.11-r0 \
-  \
-  && pip install -r /tmp/requirements.txt \
-  \
-  && apk del --no-cache --purge .build-dependencies
+RUN apk add --no-cache py3-pip python3
+RUN pip install -r /tmp/requirements.txt
+RUN apk del --no-cache --purge
 
-  RUN python /app/smStatus.py
+RUN /usr/bin/python /app/smStatus.py
