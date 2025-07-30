@@ -1,0 +1,24 @@
+---
+name: Snapmaker Monitor
+version: dev
+slug: snapmaker
+description: Python script to monitor Snapmaker 2.0 printer status and send updates to Home Assistant.
+url: https://github.com/nemesisre/SnapMaker2.0_Home-Assistant
+codenotary: nemesissre@gmail.com
+arch:
+  - aarch64
+  - amd64
+homeassistant_api: true
+options:
+  HA_TOKEN: your_ha_token
+  HA_WEBHOOK_URL: your_ha_webhook_url
+  SM_IP: your_sm_ip
+  SM_PORT: your_sm_port
+  SM_TOKEN: your_sm_token
+schema:
+  log_level: list(trace|debug|info|notice|warning|error|fatal)?
+  HA_TOKEN: "str"
+  HA_WEBHOOK_URL: "str"
+  SM_IP: "str"
+  SM_PORT: "str"
+  SM_TOKEN: "str"
