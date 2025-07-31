@@ -13,7 +13,7 @@ options:
   HA_TOKEN: your_ha_token
   HA_WEBHOOK_URL: your_ha_webhook_url
   SM_IP: your_sm_ip
-  SM_PORT: your_sm_port
+  SM_PORT: 8080
   SM_TOKEN: your_sm_token
 schema:
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
@@ -22,3 +22,9 @@ schema:
   SM_IP: "str"
   SM_PORT: "str"
   SM_TOKEN: "str"
+environment:
+  HA_TOKEN: "HA_TOKEN"
+  HA_WEBHOOK_URL: "HA_WEBHOOK_URL"
+  SM_IP: "SM_IP"
+  SM_PORT: "SM_PORT"
+  SM_TOKEN: "SM_TOKEN"
