@@ -10,7 +10,7 @@ arch:
   - amd64
 homeassistant_api: true
 options:
-  ha_toke: null
+  ha_token: null
   ha_webhook_url: null
   sm_ip: null
   sm_port: 8080
