@@ -10,21 +10,22 @@ arch:
   - amd64
 homeassistant_api: true
 options:
-  HA_TOKEN: your_ha_token
-  HA_WEBHOOK_URL: your_ha_webhook_url
-  SM_IP: your_sm_ip
-  SM_PORT: 8080
-  SM_TOKEN: your_sm_token
+  ha_toke: null
+  ha_webhook_url: null
+  sm_ip: null
+  sm_port: 8080
+  sm_token: null
+  log_level: info
 schema:
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
-  HA_TOKEN: "str"
-  HA_WEBHOOK_URL: "str"
-  SM_IP: "str"
-  SM_PORT: "str"
-  SM_TOKEN: "str"
+  ha_token: "str"
+  ha_webhook_url: "str"
+  sm_ip: "str"
+  sm_port: "str"
+  sm_token: "str"
 environment:
-  HA_TOKEN: "HA_TOKEN"
-  HA_WEBHOOK_URL: "HA_WEBHOOK_URL"
-  SM_IP: "SM_IP"
-  SM_PORT: "SM_PORT"
-  SM_TOKEN: "SM_TOKEN"
+  HA_TOKEN: ha_token
+  HA_WEBHOOK_URL: ha_webhook_url
+  SM_IP: sm_ip
+  SM_PORT: sm_port
+  SM_TOKEN: sm_token
