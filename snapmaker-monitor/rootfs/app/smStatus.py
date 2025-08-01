@@ -34,7 +34,7 @@ HA_WEBHOOK_URL = os.environ.get("HA_WEBHOOK_URL", '')  # Set your HomeAssistant 
 CONNECT_IP = os.environ.get("SM_IP", '')  # Set your SnapMaker IP or let it discover
 CONNECT_PORT = os.environ.get("SM_PORT", '8080')  # Set your SnapMaker API Port (default is 8080)
 if os.path.exists("/.dockerenv"):
-  TOKEN_FILE = os.path.join("/appdata", "SMtoken.txt")  # inside Docker
+  TOKEN_FILE = os.path.join("/data", "SMtoken.txt")  # inside Docker
 else:
   TOKEN_FILE = os.path.join(os.getcwd(), "SMtoken.txt")  # not in Docker
 
@@ -50,8 +50,17 @@ def main():
     logging.error(f"connectIP ({CONNECT_IP}) is not valid")
     sys.exit(1)
 
-  if not is_reachable(CONNECT_IP, CONNECT_PORT):
-    logging.error(f"Set IP ({CONNECT_IP}) not reachable")
+  retry_count = 0
+  while retry_count < 5:
+    if not is_reachable(CONNECT_IP, CONNECT_PORT):
+      logging.warning(f"Set IP ({CONNECT_IP}) not reachable, retrying in {retry_count * 5} minutes")
+      postIt('{"status": "UNAVAILABLE"}')
+      time.sleep(retry_count * 5 * 60)  # Wait for an increasing amount of time
+      retry_count += 1
+    else:
+      break  # If reachable, exit the loop
+  else:  # This else belongs to the while loop, executed if the loop finishes without a break
+    logging.error(f"Set IP ({CONNECT_IP}) not reachable after multiple retries")
     postIt('{"status": "UNAVAILABLE"}')
     sys.exit(1)
 
