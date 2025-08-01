@@ -13,25 +13,29 @@ import time
 from datetime import timedelta
 
 retryCounter = 0
-
-haToken = "" # Set your HomeAssistant API Token
-whUrl = '' # Set to your HomeAssistant WebHook URL
-connectIP = '' # Set printer ip or let it discover
-connectPort = '8080'
-smToken = 'generate_token' # Set SnapMaker API Token or let it generate
 tokenFile = os.getcwd() + "/SMtoken.txt" # Set to writable location (default is script location)
 
-# Read config from ENV VARS
+# Read config from ENV VARS or Set manually
 if os.environ.get("HA_TOKEN"):
   haToken = os.environ.get("HA_TOKEN")
+else:
+  haToken = '' # Set your HomeAssistant API Token
 if os.environ.get("HA_WEBHOOK_URL"):
   whUrl = os.environ.get("HA_WEBHOOK_URL")
+else:
+  whUrl = '' # Set your HomeAssistant WebHook URL
 if os.environ.get("SM_IP"):
   connectIP = os.environ.get("SM_IP")
+else:
+  connectIP = '' # Set your SnapMaker IP or let it discover
 if os.environ.get("SM_PORT"):
   connectPort = os.environ.get("SM_PORT")
+else:
+  connectPort = '8080' # Set your SnapMaker API Port (default is 8080)
 if os.environ.get("SM_TOKEN"):
   smToken = os.environ.get("SM_TOKEN")
+else:
+  smToken = 'generate_token' # Set your SnapMaker API Token or let it generate
 
 # Main Program
 def main():
