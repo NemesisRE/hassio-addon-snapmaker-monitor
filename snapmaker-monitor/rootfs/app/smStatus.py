@@ -105,7 +105,7 @@ def getSMToken(connect_ip):
             if json.loads(r.text).get("token") == sm_token:
               if os.path.exists("/.dockerenv"):
                 logging.info(f"Token received set SM_TOKEN env var to {sm_token} and restart the container.")
-                sys.exit(0)  # In Docker, we exit to allow the container to restart with the new token
+                sys.exit(100)  # In Docker, we exit to allow the container to restart with the new token
               else:
                 file.seek(0)
                 file.write(sm_token)
@@ -195,7 +195,7 @@ def postIt(status):
       raise ValueError
   except ValueError:
     logging.error(f"HA_WEBHOOK_URL ({HA_WEBHOOK_URL}) is not a valid URL, cannot post status.")
-    return
+    sys.exit(1)
 
   try:
     logging.info(f"Sending State...")
