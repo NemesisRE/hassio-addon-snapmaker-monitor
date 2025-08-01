@@ -27,7 +27,7 @@ BUFFER_SIZE = 1024
 # Read config from ENV VARS or Set manually
 HA_TOKEN = os.environ.get("HA_TOKEN", '')  # Set your HomeAssistant API Token
 HA_WEBHOOK_URL = os.environ.get("HA_WEBHOOK_URL", '')  # Set your HomeAssistant WebHook URL
-CONNECT_IP = os.environ.get("SM_IP", '10.10.97.184')  # Set your SnapMaker IP or let it discover
+CONNECT_IP = os.environ.get("SM_IP", '')  # Set your SnapMaker IP or let it discover
 CONNECT_PORT = os.environ.get("SM_PORT", '8080')  # Set your SnapMaker API Port (default is 8080)
 SM_TOKEN = os.environ.get("SM_TOKEN", 'generate_token')  # Set your SnapMaker API Token or let it generate
 
