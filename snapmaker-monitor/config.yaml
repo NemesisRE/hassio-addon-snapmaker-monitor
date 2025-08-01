@@ -14,16 +14,16 @@ options:
   option_ha_token: null
   option_ha_webhook_url: null
   option_sm_ip: null
-  option_sm_port: "8080"
+  option_sm_port: 8080
   option_sm_token: null
   option_log_level: info
 schema:
-  log_level: list(trace|debug|info|notice|warning|error|fatal)?
-  option_ha_token: "str"
-  option_ha_webhook_url: "str"
-  option_sm_ip: "str"
-  option_sm_port: "int"
-  option_sm_token: "str"
+  option_log_level: list(trace|debug|info|notice|warning|error|fatal)?
+  option_ha_token: str
+  option_ha_webhook_url: str
+  option_sm_ip: str
+  option_sm_port: int(1,65535)?
+  option_sm_token: str?
 environment:
   HA_TOKEN: option_ha_token
   HA_WEBHOOK_URL: option_ha_webhook_url
