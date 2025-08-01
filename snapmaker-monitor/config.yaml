@@ -17,9 +17,19 @@ options:
   option_sm_ip: null
   option_sm_port: 8080
   option_log_level: info
+  option_mqtt_broker: null
+  option_mqtt_port: 1883
+  option_mqtt_topic: snapmaker/status
+  option_mqtt_user: null
+  option_mqtt_password: null
 schema:
   option_log_level: list(trace|debug|info|notice|warning|error|fatal)?
-  option_ha_token: str
-  option_ha_webhook_url: str
+  option_ha_token: str?
+  option_ha_webhook_url: str?
   option_sm_ip: str
   option_sm_port: int(1,65535)?
+  option_mqtt_broker: str?
+  option_mqtt_port: int(1,65535)?
+  option_mqtt_topic: str?
+  option_mqtt_user: str?
+  option_mqtt_password: str?

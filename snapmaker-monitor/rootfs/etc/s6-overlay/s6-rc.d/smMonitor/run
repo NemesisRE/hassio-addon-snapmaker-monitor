@@ -32,9 +32,29 @@ if bashio::config.has_value 'option_sm_port'; then
     export SM_PORT=${sm_port}
 fi
 
-if bashio::config.has_value 'option_sm_token'; then
-    sm_token=$(bashio::config 'option_sm_token')
-    export SM_TOKEN=${sm_token}
+if bashio::config.has_value 'option_mqtt_broker'; then
+    mqtt_broker=$(bashio::config 'option_mqtt_broker')
+    export MQTT_BROKER=${mqtt_broker}
+fi
+
+if bashio::config.has_value 'option_mqtt_port'; then
+    mqtt_port=$(bashio::config 'option_mqtt_port')
+    export MQTT_PORT=${mqtt_port}
+fi
+
+if bashio::config.has_value 'option_mqtt_topic'; then
+    mqtt_topic=$(bashio::config 'option_mqtt_topic')
+    export MQTT_TOPIC=${mqtt_topic}
+fi
+
+if bashio::config.has_value 'option_mqtt_user'; then
+    mqtt_user=$(bashio::config 'option_mqtt_user')
+    export MQTT_USER=${mqtt_user}
+fi
+
+if bashio::config.has_value 'option_mqtt_password'; then
+    mqtt_password=$(bashio::config 'option_mqtt_password')
+    export MQTT_PASSWORD=${mqtt_password}
 fi
 
 exec python3 /app/smStatus.py

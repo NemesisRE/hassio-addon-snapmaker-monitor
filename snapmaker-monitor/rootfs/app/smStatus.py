@@ -11,6 +11,7 @@ import requests
 import json
 import time
 from datetime import timedelta
+import paho.mqtt.client as mqtt
 import logging
 
 # Configure logging
@@ -29,6 +30,11 @@ UDP_RETRIES = 5
 BUFFER_SIZE = 1024
 
 # Read config from ENV VARS or Set manually
+MQTT_BROKER = os.environ.get("MQTT_BROKER", '')
+MQTT_PORT = int(os.environ.get("MQTT_PORT", '1883'))
+MQTT_TOPIC = os.environ.get("MQTT_TOPIC", 'snapmaker/status')
+MQTT_USER = os.environ.get("MQTT_USER", '')
+MQTT_PASSWORD = os.environ.get("MQTT_PASSWORD", '')
 HA_TOKEN = os.environ.get("HA_TOKEN", '')  # Set your HomeAssistant API Token
 HA_WEBHOOK_URL = os.environ.get("HA_WEBHOOK_URL", '')  # Set your HomeAssistant WebHook URL
 CONNECT_IP = os.environ.get("SM_IP", '')  # Set your SnapMaker IP or let it discover
@@ -193,20 +199,35 @@ def postIt(status):
   session.verify = False  # Disable SSL verification
   logging.debug(f"Status: {json_status}")
 
-  # Check if HA_WEBHOOK_URL is a valid URL
-  try:
-    result = requests.compat.urlparse(HA_WEBHOOK_URL)
-    if not all([result.scheme, result.netloc]):
-      raise ValueError
-  except ValueError:
-    logging.error(f"HA_WEBHOOK_URL ({HA_WEBHOOK_URL}) is not a valid URL, cannot post status.")
-    sys.exit(1)
+  if HA_WEBHOOK_URL:
+    # Check if HA_WEBHOOK_URL is a valid URL
+    try:
+      result = requests.compat.urlparse(HA_WEBHOOK_URL)
+      if not all([result.scheme, result.netloc]):
+        raise ValueError
+    except ValueError:
+      logging.error(f"HA_WEBHOOK_URL ({HA_WEBHOOK_URL}) is not a valid URL, cannot post status.")
+      sys.exit(1)
 
-  try:
-    logging.info(f"Sending State...")
-    requests.post(HA_WEBHOOK_URL, json=json_status)
-  except requests.exceptions.RequestException as e:
-    logging.error(f"Could not connect to HomeAssistant on {HA_WEBHOOK_URL}: {e}")
+    try:
+      logging.info(f"Sending State...")
+      requests.post(HA_WEBHOOK_URL, json=json_status)
+      logging.info("State sent successfully to HomeAssistant webhook.")
+    except requests.exceptions.RequestException as e:
+      logging.error(f"Could not connect to HomeAssistant on {HA_WEBHOOK_URL}: {e}")
+
+  elif MQTT_BROKER:
+    try:
+      client = mqtt.Client()
+      if MQTT_USER:
+        logging.info(f"Sending State...")
+        client.username_pw_set(MQTT_USER, MQTT_PASSWORD)
+        client.connect(MQTT_BROKER, MQTT_PORT, 60)
+        client.publish(MQTT_TOPIC, json_status)
+        client.disconnect()
+        logging.info(f"State sent successfully to MQTT topic.")
+    except Exception as e:
+      logging.error(f"Could not connect to MQTT broker {MQTT_BROKER}: {e}")
 
 
 def is_reachable(ip_address, api_port):
