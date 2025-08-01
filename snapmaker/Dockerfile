@@ -25,8 +25,6 @@ RUN \
 # Copy root filesystem
 COPY rootfs /
 
-ENTRYPOINT [ "/app/run.sh" ]
-
 # Build arguments
 ARG BUILD_ARCH
 ARG BUILD_DATE
