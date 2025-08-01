@@ -7,6 +7,11 @@
 
 bashio::log.info "Starting Snapmaker Monitor..."
 
+if bashio::config.has_value 'option_log_level'; then
+    log_level=$(bashio::config 'option_log_level')
+    export LOG_LEVEL=${log_level}
+fi
+
 if bashio::config.has_value 'option_ha_token'; then
     ha_token=$(bashio::config 'option_ha_token')
     export HA_TOKEN=${ha_token}

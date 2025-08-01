@@ -14,7 +14,12 @@ from datetime import timedelta
 import logging
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+log_level = os.environ.get("LOG_LEVEL", 'INFO').upper()
+numeric_level = getattr(logging, log_level, None)
+if not isinstance(numeric_level, int):
+  print(f"Invalid log level: {log_level}, defaulting to INFO")
+  numeric_level = logging.INFO
+logging.basicConfig(level=numeric_level, format='%(asctime)s - %(levelname)s - %(message)s')
 
 RETRY_COUNTER = 0
 TOKEN_FILE = os.path.join(os.getcwd(), "SMtoken.txt")  # Set to writable location (default is script location)
