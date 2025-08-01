@@ -25,6 +25,8 @@ RUN \
 # Copy root filesystem
 COPY rootfs /
 
+WORKDIR /appdata
+
 # Build arguments
 ARG BUILD_ARCH
 ARG BUILD_DATE

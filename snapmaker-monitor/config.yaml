@@ -16,7 +16,6 @@ options:
   option_ha_webhook_url: null
   option_sm_ip: null
   option_sm_port: 8080
-  option_sm_token: "generate_token"
   option_log_level: info
 schema:
   option_log_level: list(trace|debug|info|notice|warning|error|fatal)?
@@ -24,4 +23,3 @@ schema:
   option_ha_webhook_url: str
   option_sm_ip: str
   option_sm_port: int(1,65535)?
-  option_sm_token: str

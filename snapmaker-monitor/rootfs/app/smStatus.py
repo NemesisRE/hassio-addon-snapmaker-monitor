@@ -22,7 +22,6 @@ if not isinstance(numeric_level, int):
 logging.basicConfig(level=numeric_level, format='%(asctime)s - %(levelname)s - %(message)s')
 
 RETRY_COUNTER = 0
-TOKEN_FILE = os.path.join(os.getcwd(), "SMtoken.txt")  # Set to writable location (default is script location)
 DISCOVER_PORT = 20054
 BROADCAST_ADDRESS = "255.255.255.255"
 UDP_TIMEOUT = 1.0
@@ -34,8 +33,10 @@ HA_TOKEN = os.environ.get("HA_TOKEN", '')  # Set your HomeAssistant API Token
 HA_WEBHOOK_URL = os.environ.get("HA_WEBHOOK_URL", '')  # Set your HomeAssistant WebHook URL
 CONNECT_IP = os.environ.get("SM_IP", '')  # Set your SnapMaker IP or let it discover
 CONNECT_PORT = os.environ.get("SM_PORT", '8080')  # Set your SnapMaker API Port (default is 8080)
-SM_TOKEN = os.environ.get("SM_TOKEN", 'generate_token')  # Set your SnapMaker API Token or let it generate
-
+if os.path.exists("/.dockerenv"):
+  TOKEN_FILE = os.path.join("/appdata", "SMtoken.txt")  # inside Docker
+else:
+  TOKEN_FILE = os.path.join(os.getcwd(), "SMtoken.txt")  # not in Docker
 
 def main():
   """Main program function."""
@@ -55,8 +56,7 @@ def main():
     sys.exit(1)
 
   global SM_TOKEN
-  if not SM_TOKEN or SM_TOKEN == "generate_token":
-    SM_TOKEN = getSMToken(CONNECT_IP)
+  SM_TOKEN = getSMToken(CONNECT_IP)
 
   logging.info(f"Connecting with Token: {SM_TOKEN}")
   sm_status = readStatus(SM_TOKEN)
@@ -103,14 +103,10 @@ def getSMToken(connect_ip):
             r.raise_for_status()
 
             if json.loads(r.text).get("token") == sm_token:
-              if os.path.exists("/.dockerenv"):
-                logging.info(f"Token received set SM_TOKEN env var to {sm_token} and restart the container.")
-                sys.exit(100)  # In Docker, we exit to allow the container to restart with the new token
-              else:
-                file.seek(0)
-                file.write(sm_token)
-                file.truncate()
-                logging.info(f"Token received and saved to {TOKEN_FILE}.")
+              file.seek(0)
+              file.write(sm_token)
+              file.truncate()
+              logging.info(f"Token received and saved to {TOKEN_FILE}.")
               return sm_token
           except requests.exceptions.RequestException as e:
             logging.error(f"Request failed: {e}")
