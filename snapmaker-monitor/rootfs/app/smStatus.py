@@ -31,8 +31,6 @@ if os.environ.get("SM_PORT"):
   connectPort = os.environ.get("SM_PORT")
 if os.environ.get("SM_TOKEN"):
   smToken = os.environ.get("SM_TOKEN")
-if os.environ.get(""):
-  smToken = os.environ.get("SM_TOKEN")
 
 # Main Program
 def main():
@@ -50,7 +48,8 @@ def main():
     postIt('{"status": "UNAVAILABLE"}')
     sys.exit(1)
 
-  if smToken == "":
+  if smToken == "" or smToken == "generate_token":
+    print("smToken not set will try to generate")
     smToken = getSMToken(connectIP)
   print("Connecting with Token:",smToken)
   smStatus = readStatus(smToken)
