@@ -9,6 +9,7 @@ init: false
 arch:
   - aarch64
   - amd64
+  - armv7
 options:
   option_ha_token: null
   option_ha_webhook_url: null
