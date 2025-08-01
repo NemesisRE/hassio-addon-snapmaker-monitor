@@ -1,0 +1,10 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Community Add-on: Snapmaker Monitor
+# Runs Snapmaker Monitor script
+# ==============================================================================
+
+bashio::log.info "Starting Snapmaker Monitor..."
+
+exec python3 /app/smStatus.py
