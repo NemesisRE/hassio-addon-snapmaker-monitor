@@ -18,6 +18,7 @@ haToken = "" # Set your HomeAssistant API Token
 whUrl = '' # Set to your HomeAssistant WebHook URL
 connectIP = '' # Set printer ip or let it discover
 connectPort = '8080'
+smToken = 'generate_token' # Set SnapMaker API Token or let it generate
 tokenFile = os.getcwd() + "/SMtoken.txt" # Set to writable location (default is script location)
 
 # Read config from ENV VARS
