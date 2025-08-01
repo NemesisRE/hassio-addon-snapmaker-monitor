@@ -103,10 +103,14 @@ def getSMToken(connect_ip):
             r.raise_for_status()
 
             if json.loads(r.text).get("token") == sm_token:
-              file.seek(0)
-              file.write(sm_token)
-              file.truncate()
-              logging.info(f"Token received and saved.\n{sm_token}\nIf you use docker set SM_TOKEN env var and restart the container.")
+              if os.path.exists("/.dockerenv"):
+                logging.info(f"Token received set SM_TOKEN env var to {sm_token} and restart the container.")
+                sys.exit(0)  # In Docker, we exit to allow the container to restart with the new token
+              else:
+                file.seek(0)
+                file.write(sm_token)
+                file.truncate()
+                logging.info(f"Token received and saved to {TOKEN_FILE}.")
               return sm_token
           except requests.exceptions.RequestException as e:
             logging.error(f"Request failed: {e}")
@@ -234,4 +238,17 @@ def updDiscover():
 
 # Run Main Program
 if __name__ == "__main__":
-  main()
+  # Check if running inside a Docker container
+  if os.path.exists("/.dockerenv"):
+    logging.debug("Running inside a Docker container")
+    while True:
+      try:
+        main()
+        time.sleep(60)
+      except Exception as e:
+        logging.error(f"An error occurred: {e}")
+        time.sleep(60)
+  else:
+    logging.debug("Not running inside a Docker container")
+    main()
+    sys.exit(0)
