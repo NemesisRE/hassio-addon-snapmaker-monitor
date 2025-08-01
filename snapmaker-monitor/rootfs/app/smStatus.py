@@ -51,7 +51,6 @@ def main():
 
   global SM_TOKEN
   if not SM_TOKEN or SM_TOKEN == "generate_token":
-    logging.info("smToken not set, will try to generate")
     SM_TOKEN = getSMToken(CONNECT_IP)
 
   logging.info(f"Connecting with Token: {SM_TOKEN}")
@@ -79,6 +78,7 @@ def getSMToken(connect_ip):
 
       else:
         # Create token
+        logging.info("smToken not set, will try to generate")
         while True:
           try:
             r = requests.post(sm_url)
@@ -105,7 +105,7 @@ def getSMToken(connect_ip):
               return sm_token
           except requests.exceptions.RequestException as e:
             logging.error(f"Request failed: {e}")
-            time.sleep(10)  # Wait before retrying
+            time.sleep(20)  # Wait before retrying
           except json.JSONDecodeError as e:
             logging.error(f"Failed to decode JSON: {e}")
             sys.exit(1)
@@ -140,18 +140,18 @@ def readStatus(sm_token):
   tool_head = sm_status.get('toolHead')
   if tool_head == "TOOLHEAD_3DPRINTING_1":
     if sm_status.get('nozzleTemperature') is None:
-      logging.info("Current Toolhead: Dual Extruder")
+      logging.debug("Current Toolhead: Dual Extruder")
       sm_status['toolHead'] = 'Dual Extruder'
       sm_status['nozzleTemperature'] = sm_status.get('nozzleTemperature1')
       sm_status['nozzleTargetTemperature'] = sm_status.get('nozzleTargetTemperature1')
     else:
-      logging.info("Current Toolhead: Extruder")
+      logging.debug("Current Toolhead: Extruder")
       sm_status['toolHead'] = "Extruder"
   elif tool_head == "TOOLHEAD_CNC_1":
-    logging.info("Current Toolhead: CNC")
+    logging.debug("Current Toolhead: CNC")
     sm_status['toolHead'] = 'CNC'
   elif tool_head == "TOOLHEAD_LASER_1":
-    logging.info("Current Toolhead: Laser")
+    logging.debug("Current Toolhead: Laser")
     sm_status['toolHead'] = 'Laser'
 
   # Format progress and time fields
@@ -177,8 +177,19 @@ def postIt(status):
   json_status = json.dumps(status, default=str, sort_keys=False, indent=2)
   session = requests.Session()
   session.verify = False  # Disable SSL verification
-  logging.info(f"Sending State: {json_status}")
+  logging.debug(f"Status: {json_status}")
+
+  # Check if HA_WEBHOOK_URL is a valid URL
   try:
+    result = requests.compat.urlparse(HA_WEBHOOK_URL)
+    if not all([result.scheme, result.netloc]):
+      raise ValueError
+  except ValueError:
+    logging.error(f"HA_WEBHOOK_URL ({HA_WEBHOOK_URL}) is not a valid URL, cannot post status.")
+    return
+
+  try:
+    logging.info(f"Sending State...")
     requests.post(HA_WEBHOOK_URL, json=json_status)
   except requests.exceptions.RequestException as e:
     logging.error(f"Could not connect to HomeAssistant on {HA_WEBHOOK_URL}: {e}")
