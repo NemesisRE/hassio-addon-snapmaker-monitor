@@ -42,11 +42,11 @@ def main():
     connectIP = updDiscover()
 
   if not validate_ip_address(connectIP):
-    print("connectIP is not valid")
+    print("connectIP (" + connectIP + ") is not valid")
     sys.exit(1)
 
   if not is_reachable(connectIP, connectPort):
-    print("Set IP " + connectIP + " not reachable")
+    print("Set IP (" + connectIP + ") not reachable")
     postIt('{"status": "UNAVAILABLE"}')
     sys.exit(1)
 
