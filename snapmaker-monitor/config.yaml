@@ -24,9 +24,3 @@ schema:
   option_sm_ip: str
   option_sm_port: int(1,65535)?
   option_sm_token: str?
-environment:
-  HA_TOKEN: option_ha_token
-  HA_WEBHOOK_URL: option_ha_webhook_url
-  SM_IP: option_sm_ip
-  SM_PORT: option_sm_port
-  SM_TOKEN: option_sm_token

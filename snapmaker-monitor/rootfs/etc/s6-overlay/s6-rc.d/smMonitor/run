@@ -7,4 +7,29 @@
 
 bashio::log.info "Starting Snapmaker Monitor..."
 
+if bashio::config.has_value 'option_ha_token'; then
+    ha_token=$(bashio::config 'option_ha_token')
+    export HA_TOKEN=${ha_token}
+fi
+
+if bashio::config.has_value 'option_ha_webhook_url'; then
+    ha_webhook_url=$(bashio::config 'option_ha_webhook_url')
+    export HA_WEBHOOK_URL=${ha_webhook_url}
+fi
+
+if bashio::config.has_value 'option_sm_ip'; then
+    sm_ip=$(bashio::config 'option_sm_ip')
+    export SM_IP=${sm_ip}
+fi
+
+if bashio::config.has_value 'option_sm_port'; then
+    sm_port=$(bashio::config 'option_sm_port')
+    export SM_PORT=${sm_port}
+fi
+
+if bashio::config.has_value 'option_sm_token'; then
+    sm_token=$(bashio::config 'option_sm_token')
+    export SM_TOKEN=${sm_token}
+fi
+
 exec python3 /app/smStatus.py
