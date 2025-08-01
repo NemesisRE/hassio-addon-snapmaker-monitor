@@ -1,5 +1,6 @@
-- trigger:
-    - platform: webhook
+---
+- triggers:
+    - trigger: webhook
       webhook_id: wh-snapmaker
       allowed_methods:
         - POST
