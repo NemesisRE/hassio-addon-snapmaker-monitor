@@ -1,4 +1,7 @@
 ---
+# SnapMaker-Monitor sensror configuration for Home Assistant
+# This file is used to define the sensor that will receive updates from the SnapMaker Monitor
+# and provide the necessary attributes for monitoring the SnapMaker 2.0 printer.
 - triggers:
     - trigger: webhook
       webhook_id: wh-snapmaker
@@ -8,7 +11,7 @@
   sensor:
     - name: "SnapMaker 2.0"
       icon: mdi:printer-3d
-      unique_id: "sensor.glados_state"
+      unique_id: "sensor.snapmaker_state"
       state: "{{ (trigger.json | from_json)['status'] }}"
       attributes:
         ip: "{{ (trigger.json | from_json)['ip'] }}"
@@ -47,3 +50,41 @@
         airPurifier: "{{ (trigger.json | from_json)['moduleList']['airPurifier'] }}"
         isEnclosureDoorOpen: "{{ (trigger.json | from_json)['isEnclosureDoorOpen'] }}"
         doorSwitchCount: "{{ (trigger.json | from_json)['doorSwitchCount'] }}"
+
+---
+# Automation to start SnapMaker Monitor when smart switch is turned on
+# This automation will trigger the SnapMaker Monitor add-on to start when the switch is turned on
+# and stop when the switch is turned off.
+# Make sure to replace 'switch.snapmaker' with the actual entity ID of your smart switch
+
+# Automation to start SnapMaker-Monitor add-on when switch is on
+- id: '1678901234567' # Unique ID, generate a new one
+  alias: Start SnapMaker-Monitor Add-on When Switch On
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: switch.snapmaker
+      from: 'off'
+      to: 'on'
+  condition: [] # Add conditions here if desired, e.g., to check add-on state
+  action:
+    - service: hassio.addon_start
+      data:
+        addon: snapmaker-monitor
+  mode: single
+
+# Automation to stop SnapMaker Monitor add-on when switch is off
+- id: '1678901234568' # Unique ID, generate a new one
+  alias: Stop My Add-on When Switch Off
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: switch.snapmaker
+      from: 'on'
+      to: 'off'
+  condition: [] # Add conditions here if desired, e.g., to check add-on state
+  action:
+    - service: hassio.addon_stop
+      data:
+        addon: snapmaker-monitor
+  mode: single
