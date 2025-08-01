@@ -30,4 +30,3 @@ environment:
   SM_IP: option_sm_ip
   SM_PORT: option_sm_port
   SM_TOKEN: option_sm_token
-  LOG_LEVEL: option_log_level
