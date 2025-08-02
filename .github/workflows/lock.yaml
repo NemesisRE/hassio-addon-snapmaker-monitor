@@ -4,9 +4,20 @@ name: Lock
 # yamllint disable-line rule:truthy
 on:
   schedule:
-    - cron: "0 9 * * *"
+    - cron: "25 3 * * *"
+  workflow_call:
   workflow_dispatch:
 
 jobs:
-  workflows:
-    uses: hassio-addons/workflows/.github/workflows/lock.yaml@main
+  lock:
+    name: 🔒 Lock closed issues and PRs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dessant/lock-threads@v5.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          process-only: "issues, prs"
+          issue-inactive-days: "30"
+          issue-lock-reason: ""
+          pr-inactive-days: "1"
+          pr-lock-reason: ""
