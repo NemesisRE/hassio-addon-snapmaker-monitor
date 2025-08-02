@@ -12,24 +12,6 @@ on:
         description: Overrides the detected slug
         required: false
         type: string
-      repository:
-        default: "repository"
-        description: The name of the stable repository
-        required: false
-        type: string
-      repository_edge:
-        default: "repository-edge"
-        description: The name of the edge repository
-        required: false
-        type: string
-      repository_beta:
-        default: "repository-beta"
-        description: The name of the beta repository
-        required: false
-        type: string
-    secrets:
-      DISPATCH_TOKEN:
-        required: true
 
 jobs:
   information:
@@ -93,6 +75,11 @@ jobs:
       matrix:
         architecture: ${{ fromJson(needs.information.outputs.architectures) }}
     steps:
+      - name: 🔄 Change repository owner case
+        id: repositoryowner
+        uses: ASzc/change-string-case-action@v6
+        with:
+          string: ${{ github.repository_owner }}
       - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v4
       - name: 🏗 Set up build cache
@@ -143,14 +130,14 @@ jobs:
           load: true
           # yamllint disable rule:line-length
           tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.environment }}
-            ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}
+            ghcr.io/${{ steps.repositoryowner.outputs.lowercase }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.environment }}
+            ghcr.io/${{ steps.repositoryowner.outputs.lowercase }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}
           # yamllint enable rule:line-length
           context: ${{ needs.information.outputs.target }}
           file: ${{ needs.information.outputs.target }}/Dockerfile
           cache-from: |
             type=local,src=/tmp/.docker-cache
-            ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:edge
+            ghcr.io/${{ steps.repositoryowner.outputs.lowercase }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:edge
           cache-to: type=local,mode=max,dest=/tmp/.docker-cache-new
           platforms: ${{ steps.flags.outputs.platform }}
           build-args: |
@@ -174,80 +161,6 @@ jobs:
         # yamllint disable rule:line-length
         run: |
           docker push \
-            "ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.environment }}"
+            "ghcr.io/${{ steps.repositoryowner.outputs.lowercase }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.environment }}"
           docker push \
-            "ghcr.io/${{ github.repository_owner }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}"
-
-  publish-edge:
-    name: 📢 Publish to edge repository
-    if: needs.information.outputs.environment == 'edge'
-    needs:
-      - information
-      - deploy
-    environment:
-      name: ${{ needs.information.outputs.environment }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🚀 Dispatch repository updater update signal
-        uses: peter-evans/repository-dispatch@v3.0.0
-        with:
-          token: ${{ secrets.DISPATCH_TOKEN }}
-          repository: ${{ github.repository_owner }}/${{ inputs.repository_edge }}
-          event-type: update
-          client-payload: >
-            {
-              "addon": "${{ needs.information.outputs.slug }}",
-              "name": "${{ needs.information.outputs.name }}",
-              "repository": "${{ github.repository }}",
-              "version": "${{ needs.information.outputs.version }}"
-            }
-
-  publish-beta:
-    name: 📢 Publish to beta repository
-    if: |
-      needs.information.outputs.environment == 'beta' ||
-      needs.information.outputs.environment == 'stable'
-    needs:
-      - information
-      - deploy
-    environment:
-      name: ${{ needs.information.outputs.environment }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🚀 Dispatch repository updater update signal
-        uses: peter-evans/repository-dispatch@v3.0.0
-        with:
-          token: ${{ secrets.DISPATCH_TOKEN }}
-          repository: ${{ github.repository_owner }}/${{ inputs.repository_beta }}
-          event-type: update
-          client-payload: >
-            {
-              "addon": "${{ needs.information.outputs.slug }}",
-              "name": "${{ needs.information.outputs.name }}",
-              "repository": "${{ github.repository }}",
-              "version": "${{ github.event.release.tag_name }}"
-            }
-
-  publish-stable:
-    name: 📢 Publish to stable repository
-    if: needs.information.outputs.environment == 'stable'
-    needs:
-      - information
-      - deploy
-    environment:
-      name: ${{ needs.information.outputs.environment }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🚀 Dispatch repository updater update signal
-        uses: peter-evans/repository-dispatch@v3.0.0
-        with:
-          token: ${{ secrets.DISPATCH_TOKEN }}
-          repository: ${{ github.repository_owner }}/${{ inputs.repository }}
-          event-type: update
-          client-payload: >
-            {
-              "addon": "${{ needs.information.outputs.slug }}",
-              "name": "${{ needs.information.outputs.name }}",
-              "repository": "${{ github.repository }}",
-              "version": "${{ github.event.release.tag_name }}"
-            }
+            "ghcr.io/${{ steps.repositoryowner.outputs.lowercase }}/${{ needs.information.outputs.slug }}/${{ matrix.architecture }}:${{ needs.information.outputs.version }}"
