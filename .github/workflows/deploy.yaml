@@ -46,9 +46,6 @@ jobs:
         id: override
         run: |
           slug="${{ steps.information.outputs.slug }}"
-          if [[ ! -z "${{ inputs.slug }}" ]]; then
-            slug="${{ inputs.slug }}"
-          fi
           echo "slug=$slug" >> "$GITHUB_OUTPUT"
       - name: ℹ️ Gather version and environment
         id: release
