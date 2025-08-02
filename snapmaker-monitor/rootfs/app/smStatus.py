@@ -154,6 +154,8 @@ def readStatus(sm_token):
     logging.error(f"Failed to decode JSON: {e}")
     return {"status": "UNAVAILABLE", "error": str(e)}
 
+  logging.debug(f"SnapMaker Status: {sm_status}")
+
   sm_status['ip'] = CONNECT_IP
 
   # Toolhead detection
