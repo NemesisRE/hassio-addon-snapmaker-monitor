@@ -58,7 +58,7 @@
 # Make sure to replace 'switch.snapmaker' with the actual entity ID of your smart switch
 
 # Automation to start SnapMaker-Monitor add-on when switch is on
-  # Unique ID, generate a new one
+# Unique ID, generate a new one
 - id: "1678901234567"
   alias: Start SnapMaker-Monitor Add-on When Switch On
   description: ""
@@ -76,7 +76,7 @@
   mode: single
 
 # Automation to stop SnapMaker Monitor add-on when switch is off
-  # Unique ID, generate a new one
+# Unique ID, generate a new one
 - id: "1678901234568"
   alias: Stop My Add-on When Switch Off
   description: ""
