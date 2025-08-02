@@ -58,14 +58,14 @@
 # Make sure to replace 'switch.snapmaker' with the actual entity ID of your smart switch
 
 # Automation to start SnapMaker-Monitor add-on when switch is on
-- id: '1678901234567'  # Unique ID, generate a new one
+- id: "1678901234567" # Unique ID, generate a new one
   alias: Start SnapMaker-Monitor Add-on When Switch On
-  description: ''
+  description: ""
   trigger:
     - platform: state
       entity_id: switch.snapmaker
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
   condition: []  # Add conditions here if desired, e.g., to check add-on state
   action:
     - service: hassio.addon_start
@@ -74,14 +74,14 @@
   mode: single
 
 # Automation to stop SnapMaker Monitor add-on when switch is off
-- id: '1678901234568'  # Unique ID, generate a new one
+- id: "1678901234568"  # Unique ID, generate a new one
   alias: Stop My Add-on When Switch Off
-  description: ''
+  description: ""
   trigger:
     - platform: state
       entity_id: switch.snapmaker
-      from: 'on'
-      to: 'off'
+      from: "on"
+      to: "off"
   condition: []  # Add conditions here if desired, e.g., to check add-on state
   action:
     - service: hassio.addon_stop

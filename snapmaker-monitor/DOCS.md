@@ -138,7 +138,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 [addon-badge]: https://my.home-assistant.io/badges/supervisor_addon.svg
-[addon]:https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?addon=snapmaker-monitor&repository_url=https%3A%2F%2Fgithub.com%2FNemesisRE%2Fhassio-addon-snapmaker-monitor
+[addon]: https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?addon=snapmaker-monitor&repository_url=https%3A%2F%2Fgithub.com%2FNemesisRE%2Fhassio-addon-snapmaker-monitor
 [contributors]: https://github.com/NemesisRE/hassio-addon-snapmaker-monitor/graphs/contributors
 [discord-ha]: https://discord.gg/c5DvZ4e
 [discord]: https://discord.me/hassioaddons
