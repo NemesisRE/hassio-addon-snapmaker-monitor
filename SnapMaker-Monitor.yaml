@@ -50,45 +50,38 @@
         airPurifier: "{{ (trigger.json | from_json)['moduleList']['airPurifier'] }}"
         isEnclosureDoorOpen: "{{ (trigger.json | from_json)['isEnclosureDoorOpen'] }}"
         doorSwitchCount: "{{ (trigger.json | from_json)['doorSwitchCount'] }}"
-
+ 
 ---
-# Automation to start SnapMaker Monitor when smart switch is turned on
-# This automation will trigger the SnapMaker Monitor add-on to start when the switch is turned on
-# and stop when the switch is turned off.
-# Make sure to replace 'switch.snapmaker' with the actual entity ID of your smart switch
-
-# Automation to start SnapMaker-Monitor add-on when switch is on
-# Unique ID, generate a new one
-- id: "1678901234567"
-  alias: Start SnapMaker-Monitor Add-on When Switch On
-  description: ""
-  trigger:
-    - platform: state
-      entity_id: switch.snapmaker
-      from: "off"
-      to: "on"
-  # Add conditions here if desired, e.g., to check add-on state
-  condition: []
-  action:
-    - service: hassio.addon_start
-      data:
-        addon: snapmaker-monitor
-  mode: single
-
-# Automation to stop SnapMaker Monitor add-on when switch is off
-# Unique ID, generate a new one
-- id: "1678901234568"
-  alias: Stop My Add-on When Switch Off
-  description: ""
-  trigger:
-    - platform: state
-      entity_id: switch.snapmaker
-      from: "on"
-      to: "off"
-  # Add conditions here if desired, e.g., to check add-on state
-  condition: []
-  action:
-    - service: hassio.addon_stop
-      data:
-        addon: snapmaker-monitor
-  mode: single
+alias: Snapmaker Monitor
+description: "Switch add-on on/off based on snapmaker smart plug state"
+triggers:
+  - trigger: state
+    entity_id:
+      - switch.NAME
+    from: null
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: device
+            type: is_on
+            device_id: ID
+            entity_id: ID
+            domain: switch
+        sequence:
+          - action: hassio.addon_start
+            metadata: {}
+            data:
+              addon: 71611ba3_snapmaker-monitor
+      - conditions:
+          - condition: device
+            type: is_off
+            device_id: ID
+            entity_id: ID
+            domain: switch
+        sequence:
+          - action: hassio.addon_stop
+            metadata: {}
+            data:
+              addon: 71611ba3_snapmaker-monitor
+mode: restart
