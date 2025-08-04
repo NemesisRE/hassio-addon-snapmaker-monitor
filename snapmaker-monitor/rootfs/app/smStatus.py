@@ -59,9 +59,9 @@ def main():
   retry_count = 0
   while retry_count < 5:
     if not is_reachable(CONNECT_IP, CONNECT_PORT):
-      logging.warning(f"Set IP ({CONNECT_IP}) not reachable, retrying in {retry_count * 5} minutes")
+      logging.warning(f"Set IP ({CONNECT_IP}) not reachable, retrying in {retry_count} minutes")
       postIt('{"status": "UNAVAILABLE"}')
-      time.sleep(retry_count * 5 * 60)  # Wait for an increasing amount of time
+      time.sleep(retry_count * 60)  # Wait for an increasing amount of time
       retry_count += 1
     else:
       break  # If reachable, exit the loop
