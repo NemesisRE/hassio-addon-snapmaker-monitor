@@ -50,7 +50,7 @@
         airPurifier: "{{ (trigger.json | from_json)['moduleList']['airPurifier'] }}"
         isEnclosureDoorOpen: "{{ (trigger.json | from_json)['isEnclosureDoorOpen'] }}"
         doorSwitchCount: "{{ (trigger.json | from_json)['doorSwitchCount'] }}"
- 
+
 ---
 alias: Snapmaker Monitor
 description: "Switch add-on on/off based on snapmaker smart plug state"
