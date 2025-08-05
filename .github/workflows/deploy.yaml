@@ -171,7 +171,8 @@ jobs:
 
   publish-stable:
     name: 📢 Publish to stable repository
-    if: needs.information.outputs.environment == 'stable'
+    if: needs.information.outputs.environment == 'stable' &&
+        github.event_name == 'release'
     needs:
       - information
       - deploy
@@ -182,6 +183,7 @@ jobs:
       - name: 🚀 Dispatch repository updater update signal
         uses: peter-evans/repository-dispatch@v3.0.0
         with:
+          token: ${{ secrets.DISPATCH_TOKEN }}
           repository: NRE-Com-Net/hassio-addons
           event-type: update
           client-payload: >
