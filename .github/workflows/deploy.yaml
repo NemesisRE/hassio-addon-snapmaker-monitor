@@ -13,6 +13,7 @@ on:
   release:
     types:
       - published
+      - released
   workflow_run:
     workflows: ["CI"]
     branches: [main]
@@ -181,8 +182,7 @@ jobs:
       - name: 🚀 Dispatch repository updater update signal
         uses: peter-evans/repository-dispatch@v3.0.0
         with:
-          token: ${{ secrets.DISPATCH_TOKEN }}
-          repository: ${{ github.repository_owner }}/${{ inputs.repository }}
+          repository: NRE-Com-Net/hassio-addons
           event-type: update
           client-payload: >
             {
