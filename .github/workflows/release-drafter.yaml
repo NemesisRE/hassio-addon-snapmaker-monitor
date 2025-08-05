@@ -10,6 +10,9 @@ on:
 jobs:
   update_release_draft:
     name: ✏️ Draft release
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: 🚀 Run Release Drafter
