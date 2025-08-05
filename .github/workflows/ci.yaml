@@ -1,6 +1,9 @@
 ---
 name: CI
 
+permissions:
+  contents: read
+
 # yamllint disable-line rule:truthy
 on:
   push:
@@ -88,18 +91,11 @@ jobs:
         env:
           SHELLCHECK_OPTS: -s bash
 
-  lint-yamllint:
-    name: YAMLLint
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⤵️ Check out code from GitHub
-        uses: actions/checkout@v4
-      - name: 🚀 Run YAMLLint
-        uses: frenck/action-yamllint@v1.5
-
   lint-prettier:
     name: Prettier
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: ⤵️ Check out code from GitHub
         uses: actions/checkout@v4
@@ -109,6 +105,16 @@ jobs:
           prettier_options: --write **/*.{json,js,md,yaml}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  lint-yamllint:
+    name: YAMLLint
+    needs: lint-prettier
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v4
+      - name: 🚀 Run YAMLLint
+        uses: frenck/action-yamllint@v1.5
 
   build:
     name: Build ${{ matrix.architecture }}

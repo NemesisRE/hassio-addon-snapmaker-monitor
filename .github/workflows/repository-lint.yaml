@@ -1,6 +1,9 @@
 ---
 name: Lint
 
+permissions:
+  contents: read
+
 # yamllint disable-line rule:truthy
 on:
   workflow_call:
