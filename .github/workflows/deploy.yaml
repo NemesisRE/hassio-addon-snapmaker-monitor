@@ -171,8 +171,9 @@ jobs:
 
   publish-stable:
     name: 📢 Publish to stable repository
-    if: needs.information.outputs.environment == 'stable' &&
-        github.event_name == 'release'
+    if: |
+      needs.information.outputs.environment == 'stable' &&
+      github.event_name == 'release'
     needs:
       - information
       - deploy
