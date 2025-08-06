@@ -3,7 +3,7 @@ name: Snapmaker Monitor
 version: dev
 slug: snapmaker-monitor
 description: Python script to monitor Snapmaker 2.0 printer status and send updates to Home Assistant.
-url: https://github.com/NemesisRE/hassio-addon-snapmaker-monitor
+url: https://github.com/NRE-Com-Net/hassio-addon-snapmaker-monitor
 codenotary: nemesissre@gmail.com
 boot: manual_only
 init: false
