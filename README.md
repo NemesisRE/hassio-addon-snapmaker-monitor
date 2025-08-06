@@ -73,7 +73,7 @@ SOFTWARE.
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[armv7-shield]: https://img.shields.io/badge/armv7-no-red.svg
+[armv7-shield]: https://img.shields.io/badge/armv7-yes-red.svg
 [commits-shield]: https://img.shields.io/github/commit-activity/y/NRE-Com-Net/hassio-addon-snapmaker-monitor
 [commits]: https://github.com/NRE-Com-Net/hassio-addon-snapmaker-monitor/commits/main
 [contributors]: https://github.com/NRE-Com-Net/hassio-addon-snapmaker-monitor/graphs/contributors
