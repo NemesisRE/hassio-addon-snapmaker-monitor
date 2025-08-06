@@ -1,4 +1,4 @@
-# Home Assistant Community Add-on: SnapMaker Monitor
+# Home Assistant NRE.Com.Net Add-on: SnapMaker Monitor
 
 [![GitHub Release][releases-shield]][releases] ![Project Stage][project-stage-shield] [![License][license-shield]](LICENSE.md)
 ![Supports aarch64 Architecture][aarch64-shield] ![Supports amd64 Architecture][amd64-shield] ![Supports armv7 Architecture][armv7-shield]
