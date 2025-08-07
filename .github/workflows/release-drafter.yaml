@@ -11,7 +11,7 @@ jobs:
   update_release_draft:
     name: ✏️ Draft release
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
