@@ -1,2 +1,2 @@
-requests
-paho-mqtt
+requests==2.32.4
+paho-mqtt==2.1.0
