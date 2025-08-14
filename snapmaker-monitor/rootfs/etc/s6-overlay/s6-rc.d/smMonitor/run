@@ -12,14 +12,9 @@ if bashio::config.has_value 'log_level'; then
     export LOG_LEVEL=${log_level}
 fi
 
-if bashio::config.has_value 'ha_token'; then
-    ha_token=$(bashio::config 'ha_token')
-    export HA_TOKEN=${ha_token}
-fi
-
-if bashio::config.has_value 'ha_webhook_url'; then
-    ha_webhook_url=$(bashio::config 'ha_webhook_url')
-    export HA_WEBHOOK_URL=${ha_webhook_url}
+if bashio::config.has_value 'ha_webhook_id'; then
+    ha_webhook_id=$(bashio::config 'ha_webhook_id')
+    export HA_WEBHOOK_ID=${ha_webhook_id}
 fi
 
 if bashio::config.has_value 'sm_ip'; then

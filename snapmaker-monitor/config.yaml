@@ -13,11 +13,10 @@ arch:
   - amd64
   - armv7
 options:
-  ha_token: ""
-  ha_webhook_url: ""
+  log_level: info
+  ha_webhook_id: ""
   sm_ip: null
   sm_port: 8080
-  log_level: info
   mqtt_broker: ""
   mqtt_port: 1883
   mqtt_topic: snapmaker/status
@@ -25,8 +24,7 @@ options:
   mqtt_password: ""
 schema:
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
-  ha_token: str?
-  ha_webhook_url: str?
+  ha_webhook_id: str?
   sm_ip: str
   sm_port: int(1,65535)?
   mqtt_broker: str?

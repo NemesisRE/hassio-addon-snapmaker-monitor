@@ -35,8 +35,12 @@ MQTT_PORT = int(os.environ.get("MQTT_PORT", '1883'))
 MQTT_TOPIC = os.environ.get("MQTT_TOPIC", 'snapmaker/status')
 MQTT_USER = os.environ.get("MQTT_USER", '')
 MQTT_PASSWORD = os.environ.get("MQTT_PASSWORD", '')
-HA_TOKEN = os.environ.get("HA_TOKEN", '')  # Set your HomeAssistant API Token
-HA_WEBHOOK_URL = os.environ.get("HA_WEBHOOK_URL", '')  # Set your HomeAssistant WebHook URL
+HA_TOKEN = os.environ.get("SUPERVISOR_TOKEN", '')  # Set your HomeAssistant API Token
+if os.path.exists("/.dockerenv"):
+  HA_WEBHOOK_ID = os.environ.get("HA_WEBHOOK_ID")  # HomeAssistant WebHook ID
+  HA_WEBHOOK_URL = "http://supervisor/core/api/webhook/" + HA_WEBHOOK_ID
+else:
+  HA_WEBHOOK_URL = os.environ.get("HA_WEBHOOK_URL", '')  # Set your HomeAssistant WebHook URL
 CONNECT_IP = os.environ.get("SM_IP", '')  # Set your SnapMaker IP or let it discover
 CONNECT_PORT = os.environ.get("SM_PORT", '8080')  # Set your SnapMaker API Port (default is 8080)
 if os.path.exists("/.dockerenv"):
