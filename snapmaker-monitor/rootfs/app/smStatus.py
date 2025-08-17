@@ -35,11 +35,19 @@ MQTT_PORT = int(os.environ.get("MQTT_PORT", '1883'))
 MQTT_TOPIC = os.environ.get("MQTT_TOPIC", 'snapmaker/status')
 MQTT_USER = os.environ.get("MQTT_USER", '')
 MQTT_PASSWORD = os.environ.get("MQTT_PASSWORD", '')
-HA_TOKEN = os.environ.get("HA_TOKEN", '')  # Set your HomeAssistant API Token
-HA_WEBHOOK_URL = os.environ.get("HA_WEBHOOK_URL", '')  # Set your HomeAssistant WebHook URL
+HA_TOKEN = os.environ.get("SUPERVISOR_TOKEN", '')  # Set your HomeAssistant API Token
+if os.path.exists("/data/options.json"):
+  HA_WEBHOOK_ID = os.environ.get("HA_WEBHOOK_ID")  # HomeAssistant WebHook ID
+  if HA_WEBHOOK_ID is not None:
+    HA_WEBHOOK_URL = "http://supervisor/core/api/webhook/" + HA_WEBHOOK_ID
+  else:
+    logging.error("HA_WEBHOOK_ID environment variable is not set. HA_WEBHOOK_URL will be empty.")
+    HA_WEBHOOK_URL = ''
+else:
+  HA_WEBHOOK_URL = os.environ.get("HA_WEBHOOK_URL", '')  # Set your HomeAssistant WebHook URL
 CONNECT_IP = os.environ.get("SM_IP", '')  # Set your SnapMaker IP or let it discover
 CONNECT_PORT = os.environ.get("SM_PORT", '8080')  # Set your SnapMaker API Port (default is 8080)
-if os.path.exists("/.dockerenv"):
+if os.path.exists("/data/options.json"):
   TOKEN_FILE = os.path.join("/data", "SMtoken.txt")  # inside Docker
 else:
   TOKEN_FILE = os.path.join(os.getcwd(), "SMtoken.txt")  # not in Docker
@@ -266,9 +274,9 @@ def updDiscover():
 
 # Run Main Program
 if __name__ == "__main__":
-  # Check if running inside a Docker container
-  if os.path.exists("/.dockerenv"):
-    logging.debug("Running inside a Docker container")
+  # Check if running inside a HA Addon container
+  if os.path.exists("/data/options.json"):
+    logging.debug("Running inside a HA Addon container")
     while True:
       try:
         main()
@@ -277,6 +285,6 @@ if __name__ == "__main__":
         logging.error(f"An error occurred: {e}")
         time.sleep(60)
   else:
-    logging.debug("Not running inside a Docker container")
+    logging.debug("Not running inside a HA Addon container")
     main()
     sys.exit(0)
